@@ -1,0 +1,20 @@
+pipeline{
+    agent any
+    stages{
+        stage('satge1'){
+            steps{
+                git branch: 'main', url: 'https://github.com/mohammedashiqu/comingsoon-java.git'
+            }
+        }
+        stage('Maven Build and Initial Testing'){
+            steps{
+                sh "mvn clean install package"
+            }
+        }
+        stage('Deploy to Server'){
+            steps{
+                deploy adapters: [tomcat9(credentialsId: 'tom', path: '', url: 'http://54.147.105.187:8080')], contextPath: null, war: '**/*.war'
+            }
+        }
+    }
+}
